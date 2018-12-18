@@ -7,6 +7,7 @@ const passport = require('passport');
 // Bring in Api files
 const users = require('./routes//api/users');
 const books = require('./routes//api/books');
+const newsletter = require('./routes//api/newsletter');
 
 
 const app = express();
@@ -50,6 +51,7 @@ app.get('/', (req, res) => res.send('Hello world!'));
 // telling any route / users to go to users
 app.use('/api/users', users);
 app.use('/api/books', books);
+app.use('/api/newsletter', newsletter);
 
 
 const port = process.env.PORT || 7000;

@@ -7,7 +7,6 @@ const keys = require('../../config/keys');
 const passport = require('passport');
 
 
-
 // Load Input Validation
 const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
@@ -29,6 +28,7 @@ router.get('/test', (req, res) =>
 // @route   POST api/users/register
 // @desc    Register user
 // @access  Public
+
 router.post('/register', (req, res) => {
 
   const {
@@ -69,7 +69,10 @@ router.post('/register', (req, res) => {
           // set newUser password to the hashde password
           newUser.password = hash;
           newUser.save()
-            .then(user => res.json(user))
+            .then(user => res.json({
+              user,
+              message: 'resgistration successful.'
+            }))
             .catch(err => console.log(err));
         });
       });
@@ -82,6 +85,7 @@ router.post('/register', (req, res) => {
 // @route GET api/users/login
 // @desc Login user / returning JWT Token
 // @access Public
+
 router.post('/login', (req, res) => {
 
   const {
@@ -130,7 +134,8 @@ router.post('/login', (req, res) => {
             (err, token) => {
               res.json({
                 success: true,
-                token: 'Bearer ' + token
+                token: 'Bearer ' + token,
+                message: 'login successfully'
               });
             }
           );

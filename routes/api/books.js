@@ -11,7 +11,6 @@ const validateBookInput = require('../../validation/book');
 
 
 
-
 // @route   GET api/books
 // @desc    Get books
 // @access  Public
@@ -84,26 +83,32 @@ router.delete(
 );
 
 
+
+
 // @route put api/books/creatBooks
 // @desc Update book by user..
 // @access Private route..
-router.put('/id', passport.authenticate('jwt', {
+router.put(
+	'/id',
+	passport.authenticate('jwt', {
 		session: false
 	}),
 	(req, res, next) => {
 		const userId = req.params.id;
 		// find user of thr book
-		Userprofile.findOne({user: userId})
-		.then(Userprofile => {
+		Userprofile.findOne({ user: userId }).then(Userprofile => {
 			const bookData = {
-				"author": req.body.author,
-				"date": req.body.date,
-				"title": req.body.title,
-				"description": req.body.description,
-				"quantity": req.body.quantity
-			}
-		})
-	})
+				author: req.body.author,
+				date: req.body.date,
+				title: req.body.title,
+				description: req.body.description,
+				quantity: req.body.quantity
+			};
+		});
+	}
+);
+
+
 
 
 // @route Post api/books/creatBooks
@@ -140,8 +145,6 @@ router.post(
 		);
 	}
 );
-
-
 
 
 
