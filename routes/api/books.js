@@ -86,25 +86,57 @@ router.delete(
 // @route put api/books/creatBooks
 // @desc Update book by user..
 // @access Private route..
-// router.put(
-// 	'/id',
-// 	passport.authenticate('jwt', {
-// 		session: false
-// 	}),
-// 	(req, res, next) => {
-// 		const userId = req.params.id;
-// 		// find user of thr book
-// 		Userprofile.findOne({ user: userId }).then(Userprofile => {
-// 			const bookData = {
-// 				author: req.body.author,
-// 				date: req.body.date,
-// 				title: req.body.title,
-// 				description: req.body.description,
-// 				quantity: req.body.quantity
-// 			};
-// 		});
-// 	}
-// );
+router.put(
+	'/:id',
+	passport.authenticate('jwt', {
+		session: false
+	}),
+	(req, res) => {
+    
+		const bookData = {
+			title: req.body.title,
+			image: req.body.image,
+			isbn: req.body.isbn,
+			description: req.body.description,
+			updatedAt: new Date()
+		};
+
+				// const
+
+		const userId = req.user.id;
+		// find user of thr book
+		User.findOne({ user: userId }).then(user => {
+
+			Book.findById(req.params.id).then(book =>{
+				if (book.user.toString() !== req.user.id) {
+					return res.status(401).json({
+						message: 'User not authorised'
+					});
+				}
+
+				book.updateOne(bookData).then(updated => {
+					if (updated) {
+
+						const id = req.params.id;
+
+						Book.findById(id)
+		          .then(book => res.json(book))
+		          .catch(err =>
+			        res.status(404).json({
+				        message: 'No book found with that ID'
+			      })
+		      );
+					}
+				});
+
+				return book;
+			}).catch(err => res.status(404).json({ message: 'No book found with that ID' }))
+			
+			
+			
+		});
+	}
+);
 
 
 

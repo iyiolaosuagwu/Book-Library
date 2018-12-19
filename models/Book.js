@@ -14,6 +14,7 @@ const BookSchema = new Schema({
   image: {
     data: Buffer,
     contentType: String
+    // type: String,
   },
   category: {
     type: String,
@@ -36,6 +37,10 @@ const BookSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: null
   },
   year: {
     type: Date,
