@@ -54,24 +54,22 @@ router.delete(
 	passport.authenticate('jwt', {
 		session: false
 	}),
-	(req, res, next) => {
+	(req, res) => {
 		// check to see if the user deleting is the owner of the post
-		const userId = req.params.id;
-
-		Userprofile.findOne({
-			user: userId
-		}).then(Userprofile => {
+		User.findOne({
+			user: req.user.id
+		}).then(user => {
 			Book.findById(req.params.id).then(book => {
 				// Check for book owner
 				// if doesnt match user that is logged in
-				if (postuser.toString() !== req.user.id) {
+				if (book.user.toString() !== req.user.id) {
 					return res.status(401).json({
 						message: 'User not authorised'
 					});
 				}
 
 				// Delete
-				post.remove().then(() =>
+				book.remove().then(() =>
 					res.json({
 						success: true,
 						message: 'Book deleted successfully'
@@ -88,25 +86,25 @@ router.delete(
 // @route put api/books/creatBooks
 // @desc Update book by user..
 // @access Private route..
-router.put(
-	'/id',
-	passport.authenticate('jwt', {
-		session: false
-	}),
-	(req, res, next) => {
-		const userId = req.params.id;
-		// find user of thr book
-		Userprofile.findOne({ user: userId }).then(Userprofile => {
-			const bookData = {
-				author: req.body.author,
-				date: req.body.date,
-				title: req.body.title,
-				description: req.body.description,
-				quantity: req.body.quantity
-			};
-		});
-	}
-);
+// router.put(
+// 	'/id',
+// 	passport.authenticate('jwt', {
+// 		session: false
+// 	}),
+// 	(req, res, next) => {
+// 		const userId = req.params.id;
+// 		// find user of thr book
+// 		Userprofile.findOne({ user: userId }).then(Userprofile => {
+// 			const bookData = {
+// 				author: req.body.author,
+// 				date: req.body.date,
+// 				title: req.body.title,
+// 				description: req.body.description,
+// 				quantity: req.body.quantity
+// 			};
+// 		});
+// 	}
+// );
 
 
 

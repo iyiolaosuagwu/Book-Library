@@ -9,7 +9,6 @@
  });
 
 
-
  router.post('/', (req, res) => {
    const {
      firseName,
@@ -17,7 +16,7 @@
      email
    } = req.body;
 
-   console.log(req.body)
+   console.log(req.body);
  })
 
 
